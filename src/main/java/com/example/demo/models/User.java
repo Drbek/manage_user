@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class User{
     private @Id @GeneratedValue Long id;
     @NotNull
-	@Size(min=2, max=30,message="Name must be between 2 and 30 character")
+	@Size(min=2,message="Name must have at least 2 and 30 character")
     private String name;
     @NotNull
 	@Size(min=2, max=30,message="Surname must be between 2 and 30 character")

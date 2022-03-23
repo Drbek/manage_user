@@ -3,6 +3,7 @@ package com.example.demo;
 import java.util.List;
 import java.util.Map;
 import java.io.*;
+import java.lang.*;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -54,16 +55,17 @@ class UserController {
               @RequestParam(name="surname") String surname,
               @RequestParam(name="email")  String email,
               @RequestParam(name="age")  int age) {
+      
+      User newUser=new User(name,surname,file.getOriginalFilename(),age,email,false);
+      Set<ConstraintViolation<User>> constraintViolation = validator.validate(newUser);
+      if (!constraintViolation.isEmpty()) {
+        throw new ConstraintViolationException(constraintViolation);
+      }
       String fileName = fileStorageService.storeFile(file);
       String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/images/")
             .path(fileName)
             .toUriString();
-      User newUser=new User(name,surname,fileDownloadUri,age,email,false);
-      Set<ConstraintViolation<User>> constraintViolation = validator.validate(newUser);
-      if (!constraintViolation.isEmpty()) {
-        throw new ConstraintViolationException(constraintViolation);
-      }
       newUser.setPhotoUrl(fileDownloadUri);
       return repository.save(newUser);
   }
@@ -78,22 +80,49 @@ class UserController {
   }
 
   @PutMapping("/users/{id}")
-  User replaceUser(@RequestBody User newUser, @PathVariable Long id) {
+  User replaceUser(@RequestParam(name="file") MultipartFile file,
+                   @RequestParam(name="name")  String name,
+                   @RequestParam(name="surname") String surname,
+                   @RequestParam(name="email")  String email,
+                   @RequestParam(name="age")  int age,
+                   @RequestParam(name="actif")  int actif,
+                   @PathVariable Long id) {
+  try{
+        return repository.findById(id)
+              .map(user -> {
+                if(actif==0)
+                {
+                  user.setActif(false);
+                }else if(actif==1)
+                {
+                  user.setActif(true);
+                }else
+                {
+                  throw new UpdatedUserException("Entrer 0 ou 1 !!!");
+                }
+                user.setName(name);
+                user.setSurname(surname);
+                String fileName = fileStorageService.storeFile(file);
+                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/images/")
+                    .path(fileName)
+                    .toUriString();
+                user.setPhotoUrl(fileDownloadUri);
+                user.setEmail(email);
+                user.setAge(age);
+                
+                return repository.save(user);
+              })
+              .orElseGet(() -> {
+                User u=new User();
+                u.setId(id);
+                return repository.save(u);
+              });
+      }catch(Exception e)
+      {
+        throw new UpdatedUserException("Something wrong happened!!");
+      }
     
-    return repository.findById(id)
-      .map(employee -> {
-        employee.setName(newUser.getName());
-        employee.setSurname(newUser.getSurname());
-        employee.setPhotoUrl(newUser.getPhotoUrl());
-        employee.setEmail(newUser.getEmail());
-        employee.setAge(newUser.getAge());
-        employee.setActif(newUser.getActif());
-        return repository.save(employee);
-      })
-      .orElseGet(() -> {
-        newUser.setId(id);
-        return repository.save(newUser);
-      });
   }
 
   @DeleteMapping("/users/{id}")
