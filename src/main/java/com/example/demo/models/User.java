@@ -22,7 +22,6 @@ public class User{
     private Integer age;
     @Email(message="Enter valid email!!!")
     private String email;
-    @AssertFalse(message="Enter false value!!!")
     private Boolean actif;
     User(){}
     User(String name,String surname,String photoUrl,Integer age,String email,Boolean actif)

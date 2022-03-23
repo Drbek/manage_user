@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +27,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+@CrossOrigin
 @RestController
 @Validated
+@RequestMapping("/api")
 class UserController {
 
   private final UserRepository repository;
@@ -80,14 +82,14 @@ class UserController {
   }
 
   @PutMapping("/users/{id}")
-  User replaceUser(@RequestParam(name="file") MultipartFile file,
+  User replaceUser(@RequestParam(name="file", required=false) MultipartFile file,
                    @RequestParam(name="name")  String name,
                    @RequestParam(name="surname") String surname,
                    @RequestParam(name="email")  String email,
                    @RequestParam(name="age")  int age,
                    @RequestParam(name="actif")  int actif,
                    @PathVariable Long id) {
-  try{
+  //try{
         return repository.findById(id)
               .map(user -> {
                 if(actif==0)
@@ -96,18 +98,22 @@ class UserController {
                 }else if(actif==1)
                 {
                   user.setActif(true);
-                }else
+                }/* else
                 {
                   throw new UpdatedUserException("Entrer 0 ou 1 !!!");
-                }
+                } */
                 user.setName(name);
                 user.setSurname(surname);
-                String fileName = fileStorageService.storeFile(file);
-                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/images/")
-                    .path(fileName)
-                    .toUriString();
-                user.setPhotoUrl(fileDownloadUri);
+                if(file!=null)
+                {
+                  String fileName = fileStorageService.storeFile(file);
+                  String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                      .path("/images/")
+                      .path(fileName)
+                      .toUriString();
+                  user.setPhotoUrl(fileDownloadUri);
+                }
+                
                 user.setEmail(email);
                 user.setAge(age);
                 
@@ -118,10 +124,10 @@ class UserController {
                 u.setId(id);
                 return repository.save(u);
               });
-      }catch(Exception e)
+      /* }catch(Exception e)
       {
         throw new UpdatedUserException("Something wrong happened!!");
-      }
+      } */
     
   }
 

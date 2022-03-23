@@ -21,7 +21,7 @@ public class DemoApplication  implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         // Register resource handler for images
-        registry.addResourceHandler("/images**").addResourceLocations("classpath:/resources/" ,"classpath:/images/")
-                .setCachePeriod(0);
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/resources/images/" ,"classpath:/images/")
+                .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
     }      
 }
