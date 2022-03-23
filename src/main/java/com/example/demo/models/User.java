@@ -1,8 +1,9 @@
 package com.example.demo;
 import java.util.Objects;
-import javax.validation.constraints.Min;
+/* import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Size; */
+import javax.validation.constraints.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,11 +11,18 @@ import javax.persistence.Id;
 @Entity
 public class User{
     private @Id @GeneratedValue Long id;
+    @NotNull
+	@Size(min=2, max=30,message="Name must be between 2 and 30 character")
     private String name;
+    @NotNull
+	@Size(min=2, max=30,message="Surname must be between 2 and 30 character")
     private String surname;
     private String photoUrl;
+    @Digits(integer=3, fraction=2,message="Enter valid age!!!")
     private Integer age;
+    @Email(message="Enter valid email!!!")
     private String email;
+    @AssertFalse(message="Enter false value!!!")
     private Boolean actif;
     User(){}
     User(String name,String surname,String photoUrl,Integer age,String email,Boolean actif)
