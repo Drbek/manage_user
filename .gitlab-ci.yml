@@ -23,6 +23,5 @@ package-deploy-job:
   stage: package
   script:
     - echo "packaging your app "
-    - cd $CI_PROJECT_NAME
-    - git push heroku main
+    - echo $PWD
 
