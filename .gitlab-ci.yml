@@ -24,6 +24,8 @@ package-deploy-job:
   stage: package
   image: ruby:latest
   script:
-    - echo "packaging your app"
+    - apt-get update -yq
+    - apt-get install -y ruby-dev
+    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
 
