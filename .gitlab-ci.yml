@@ -20,8 +20,10 @@ cache:
     - .m2/repository
   key: "$CI_JOB_NAME"
 package-deploy-job:
+  type: deploy
   stage: package
+  image: ruby:latest
   script:
     - echo "packaging your app"
-    - git push heroku main
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
 
