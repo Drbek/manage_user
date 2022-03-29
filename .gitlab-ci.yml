@@ -26,5 +26,5 @@ deploy-job:      # This job runs in the deploy stage.
     - git remote add heroku https://git.heroku.com/mysterious-scrubland-19985.git
     - git add .
     - git commit -m "init"
-    - git push heroku master
+    - git push --force heroku master
     - echo "Application successfully deployed."
