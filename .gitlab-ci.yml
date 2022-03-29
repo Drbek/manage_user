@@ -23,5 +23,5 @@ package-job:
   stage: package
   script:
     - echo "packaging your app"
-    - cat $CI_PROJECT_NAME/ec2_giltab.pem
+    - echo $PWD/$CI_PROJECT_NAME/ec2_giltab.pem
 
