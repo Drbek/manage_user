@@ -21,6 +21,8 @@ deploy-job:      # This job runs in the deploy stage.
     - echo "Deploying application..."
     - Remove-Item .git -Recurse -Force -Confirm:$false
     - git init
+    - git config --global user.email "GitLab-user@demo.com"
+    - git config --global user.name "GitLab-user"
     - git remote add heroku https://git.heroku.com/mysterious-scrubland-19985.git
     - git add .
     - git commit -m "init"
