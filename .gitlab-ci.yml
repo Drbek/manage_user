@@ -19,8 +19,9 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
     - echo "Deploying application..."
+    - Remove-Item .git -Recurse -Force -Confirm:$false
     - git init
-    - heroku git:remote --app mysterious-scrubland-19985
+    - git remote add heroku https://git.heroku.com/mysterious-scrubland-19985.git
     - git add .
     - git commit -m "init"
     - git push heroku master
