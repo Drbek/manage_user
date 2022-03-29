@@ -19,9 +19,10 @@ cache:
   paths:
     - .m2/repository
   key: "$CI_JOB_NAME"
-package-job:
+package-deploy-job:
   stage: package
   script:
     - echo "packaging your app"
-    - scp -i $PWD\ec2_giltab.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $CI_PROJECT_NAME/target/* ec2-user@3.91.241.97:home/ec2-user/
+    - cd $CI_PROJECT_NAME
+    - git push heroku main
 
