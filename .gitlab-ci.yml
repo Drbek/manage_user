@@ -22,6 +22,6 @@ cache:
 package-deploy-job:
   stage: package
   script:
-    - echo "packaging your app "
-    - echo $PWD
+    - echo "packaging your app"
+    - git push heroku main
 
