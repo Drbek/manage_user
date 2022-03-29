@@ -23,5 +23,6 @@ package-job:
   stage: package
   script:
     - echo "packaging your app"
-    - cat $PWD\ec2_giltab.pem
+    - echo $CI_PROJECT_NAME\ec2_giltab.pem
+    - scp -i $PWD\ec2_giltab.pem $CI_PROJECT_NAME/target/* ec2-user@3.91.241.97:home/ec2-user/
 
