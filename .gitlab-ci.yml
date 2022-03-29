@@ -19,7 +19,7 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
     - echo "Deploying application..."
-    - rmdir /s /q .git
+    - rmdir /s /q ".git"
     - git init
     - heroku git:remote --app mysterious-scrubland-19985
     - git add .
