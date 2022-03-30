@@ -27,4 +27,4 @@ deploy-job:      # This job runs in the deploy stage.
     - git add .
     - git commit -m "init"
     - git push --force heroku master
-    - echo "Application successfully deployed."
+    - echo "Application successfully deployed"
