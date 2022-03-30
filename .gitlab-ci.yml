@@ -18,6 +18,6 @@ stages:          # List of stages for jobs, and their order of execution
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
-    - echo "Deploying application......"
+    - echo "Deploying application........."
     - dpl --provider=heroku --app=mysterious-scrubland-19985 --api_key=$HEROKU_API_KEY
     - echo "Application successfully deployed"
