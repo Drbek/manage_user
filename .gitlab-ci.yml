@@ -14,7 +14,32 @@
 # For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
 
 stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - quality
   - deploy
+build-job:
+  stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH=="main"
+      when: manual
+      allow_failure: true
+  script:
+    - echo "Starting building....."
+    - mvn compile -o
+    - echo "build finished successfully"
+test-job:
+  stage: test
+  script:
+    - echo "Starting testing....."
+    - mvn test -o
+    - echo "test finished successfully"
+quality-job:
+  stage: quality
+  script:
+    - echo "Starting test quality....."
+    - mvn compile -o
+    - echo "quality test finished successfully"
 deploy-job:      # This job runs in the deploy stage.
   tags:
     - first
