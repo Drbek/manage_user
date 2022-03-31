@@ -23,4 +23,9 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
     - echo "Deploiement en cours..........."
+    - cd ..
+    - git clone https://gitlab.com/bekonrolang/manage_user.git tmp_repo
+    - cd tmp_repo
     - dpl --provider=heroku --strategy=git --git=https://git.heroku.com/mysterious-scrubland-19985.git --api_key=0dbebf2d-ca81-4288-a0f6-818f3f1b1a30 --app=mysterious-scrubland-19985
+    - cd ..
+    - Remove-Item .\tmp_repo\ -Recurse -Force -Confirm:$false
