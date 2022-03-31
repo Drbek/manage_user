@@ -22,7 +22,6 @@ build-job:
   stage: build
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH!="main" && $CI_COMMIT_BRANCH!="develop"
-      when: manual
       allow_failure: true
     #- if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   script:
@@ -33,7 +32,6 @@ test-job:
   stage: test
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH!="main" && $CI_COMMIT_BRANCH!="develop"
-      when: manual
       allow_failure: true  
   script:
     - echo "Starting testing....."
@@ -43,7 +41,6 @@ quality-job:
   stage: quality
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH!="main" && $CI_COMMIT_BRANCH!="develop"
-      when: manual
       allow_failure: true
   script:
     - echo "Starting test quality....."
@@ -57,7 +54,6 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_BRANCH=="main"
-      when: manual
       allow_failure: true  
   script:
     - echo "Deployment..........."
